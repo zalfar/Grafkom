@@ -15,6 +15,8 @@ void Demo::Init() {
 	BuildKasur();
 	BuildKursiDudukan();
 	BuildKursiSandaran();
+	BuildMeja();
+	BuildKakiMeja();
 	InitCamera();
 }
 void Demo::DeInit() {
@@ -121,6 +123,8 @@ void Demo::Render() {
 	DrawKasur();
 	DrawKursiDudukan();
 	DrawKursiSandaran();
+	DrawMeja();
+	DrawKakiMeja();
 	Drawtembok();
 	DrawColoredPlane();
 	glDisable(GL_DEPTH_TEST);
@@ -321,40 +325,40 @@ void Demo::BuildKursiSandaran()
 	float vertices[] = {
 		// format position, tex coords
 		// front
-		 //2.0,   0.0, -3.0, 0, 0,  // 0
-		 //3.0,   0.0, -3.0, 1, 0,  // 1
-		 //3.0,   0.2, -3.0, 1, 1,  // 2
-		 //2.0,   0.2, -3.0, 0, 1,  // 3
+		 2.0,   0.2, -3.7, 0, 0,  // 0
+		 3.0,   0.2, -3.7, 1, 0,  // 1
+		 3.0,   1.0, -3.7, 1, 1,  // 2
+		 2.0,   1.0, -3.7, 0, 1,  // 3
 
-		//// right
+		// right
 		 3.0,   0.2, -3.7, 0, 0,  // 4
 		 3.0,   0.2, -3.9, 1, 0,  // 5
 		 3.0,   1.0, -3.9, 1, 1,  // 6
 		 3.0,   1.0, -3.7, 0, 1,  // 7
 
 		// back
-		 //3.0,   0.2, -3.9, 0, 0, // 8 
-		 //2.0,   0.2, -3.9, 1, 0, // 9
-		 //2.0,   1.0, -3.9, 1, 1, // 10
-		 //3.0,   1.0, -3.9, 0, 1, // 11
+		 3.0,   0.2, -3.9, 0, 0, // 8 
+		 2.0,   0.2, -3.9, 1, 0, // 9
+		 2.0,   1.0, -3.9, 1, 1, // 10
+		 3.0,   1.0, -3.9, 0, 1, // 11
 
 		// left
-		 3.0,   0.2, -3.9, 0, 0, // 12
-		 3.0,   0.2, -3.7, 1, 0, // 13
-		 3.0,   1.0, -3.7, 1, 1, // 14
-		 3.0,   1.0, -3.9, 0, 1, // 15
+		 2.0,   0.2, -3.9, 0, 0, // 12
+		 2.0,   0.2, -3.7, 1, 0, // 13
+		 2.0,   1.0, -3.7, 1, 1, // 14
+		 2.0,   1.0, -3.9, 0, 1, // 15
 
-		//// upper
-		 //3.0,   1.0, -3.0, 0, 0,   // 16
-		 //2.0,   1.0, -3.0, 1, 0,  // 17
-		 //2.0,   1.0, -3.9, 1, 1,  // 18
-		 //3.0,   1.0, -3.9, 0, 1,   // 19
+		// upper
+		 3.0,   1.0, -3.7, 0, 0,   // 16
+		 2.0,   1.0, -3.7, 1, 0,  // 17
+		 2.0,   1.0, -3.9, 1, 1,  // 18
+		 3.0,   1.0, -3.9, 0, 1,   // 19
 
 		// bottom
-		 //3.0,   0.1, -3.0, 0, 0, // 20
-		 //2.0,   0.1, -3.0, 1, 0,  // 21
-		 //3.0,   0.1, -3.9, 1, 1,  // 22
-		 //2.0,   0.1, -3.9, 0, 1, // 23
+		 3.0,   0.3, -3.0, 0, 0, // 20
+		 2.0,   0.3, -3.0, 1, 0,  // 21
+		 3.0,   0.3, -3.9, 1, 1,  // 22
+		 2.0,   0.3, -3.9, 0, 1, // 23
 	};
 
 	unsigned int indices[] = {
@@ -397,6 +401,190 @@ void Demo::BuildKursiSandaran()
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 
 }
+
+void Demo::BuildMeja()
+{
+	glGenTextures(1, &mejaTexture);
+	glBindTexture(GL_TEXTURE_2D, mejaTexture);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	int width, height;
+	unsigned char* image = SOIL_load_image("wood1.png", &width, &height, 0, SOIL_LOAD_RGBA);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, image);
+	SOIL_free_image_data(image);
+	glBindTexture(GL_TEXTURE_2D, 0);
+	float vertices[] = {
+		// format position, tex coords
+		// front
+		 1.5,   0.5,  0.7, 0, 0,  // 0
+		 3.9,   0.5,  0.7, 1, 0,  // 1
+		 3.9,   0.7,  0.7, 1, 1,  // 2
+		 1.5,   0.7,  0.7, 0, 1,  // 3
+
+		// right
+		 3.9,   0.5,  0.7, 0, 0,  // 4
+		 3.9,   0.5,  0, 1, 0,  // 5
+		 3.9,   0.7,  0, 1, 1,  // 6
+		 3.9,   0.7,  0.7, 0, 1,  // 7
+
+		// back
+		 1.5,   0.5,  0, 0, 0, // 8 
+		 3.9,   0.5,  0, 1, 0, // 9
+		 3.9,   0.7,  0, 1, 1, // 10
+		 1.5,   0.7,  0, 0, 1, // 11
+
+
+		// left
+		 1.5,   0.5,  0, 0, 0, // 12
+		 1.5,   0.5,  0.7, 1, 0, // 13
+		 1.5,   0.7,  0.7, 1, 1, // 14
+		 1.5,   0.7,  0, 0, 1, // 15
+
+		// upper
+		 1.5,   0.7,  0.7, 0, 0,   // 16
+		 3.9,   0.7,  0.7, 1, 0,  // 17
+		 3.9,   0.7,  0, 1, 1,  // 18
+		 1.5,   0.7,  0, 0, 1,   // 19
+
+		// bottom
+		 1.5,   0.5,  0.7, 0, 0, // 20
+		 3.9,   0.5,  0.7, 1, 0,  // 21
+		 3.9,   0.5,  0, 1, 1,  // 22
+		 1.5,   0.5,  0, 0, 1, // 23
+	};
+
+	unsigned int indices[] = {
+		0,  1,  2,  0,  2,  3,   // front
+		4,  5,  6,  4,  6, 7,   // right
+		8,  9,  10, 8,  10, 11,  // back
+		12, 14, 13, 12, 15, 14,  // left
+		16, 18, 17, 16, 19, 18,  // upper
+		20, 22, 21, 20, 23, 22   // bottom
+	};
+
+	glGenVertexArrays(1, &mejaVAO);
+	glGenBuffers(1, &mejaVBO);
+	glGenBuffers(1, &mejaEBO);
+	// bind the Vertex Array Object first, then bind and set vertex buffer(s), and then configure vertex attributes(s).
+	glBindVertexArray(mejaVAO);
+
+	glBindBuffer(GL_ARRAY_BUFFER, mejaVBO);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
+
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, mejaEBO);
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
+
+	// define position pointer layout 0
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(GLfloat), (GLvoid*)(0 * sizeof(GLfloat)));
+	glEnableVertexAttribArray(0);
+
+	// define texcoord pointer layout 1
+	glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(GLfloat), (GLvoid*)(3 * sizeof(GLfloat)));
+	glEnableVertexAttribArray(1);
+
+	// note that this is allowed, the call to glVertexAttribPointer registered VBO as the vertex attribute's bound vertex buffer object so afterwards we can safely unbind
+	glBindBuffer(GL_ARRAY_BUFFER, 0);
+
+	// You can unbind the VAO afterwards so other VAO calls won't accidentally modify this VAO, but this rarely happens. Modifying other
+	// VAOs requires a call to glBindVertexArray anyways so we generally don't unbind VAOs (nor VBOs) when it's not directly necessary.
+	glBindVertexArray(0);
+
+	// remember: do NOT unbind the EBO while a VAO is active as the bound element buffer object IS stored in the VAO; keep the EBO bound.
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+
+}
+void Demo::BuildKakiMeja()
+{
+	glGenTextures(1, &kakiMejaTexture);
+	glBindTexture(GL_TEXTURE_2D, kakiMejaTexture);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	int width, height;
+	unsigned char* image = SOIL_load_image("wood.png", &width, &height, 0, SOIL_LOAD_RGBA);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, image);
+	SOIL_free_image_data(image);
+	glBindTexture(GL_TEXTURE_2D, 0);
+	float vertices[] = {
+		// format position, tex coords
+		// front
+		 1.5,   0.5,  0.7, 0, 0,  // 0
+		 3.9,   0.5,  0.7, 1, 0,  // 1
+		 3.9,   0.7,  0.7, 1, 1,  // 2
+		 1.5,   0.7,  0.7, 0, 1,  // 3
+
+		// right
+		 3.9,   0.5,  0.7, 0, 0,  // 4
+		 3.9,   0.5,  0, 1, 0,  // 5
+		 3.9,   0.7,  0, 1, 1,  // 6
+		 3.9,   0.7,  0.7, 0, 1,  // 7
+
+		// back
+		 1.5,   0.5,  0, 0, 0, // 8 
+		 3.9,   0.5,  0, 1, 0, // 9
+		 3.9,   0.7,  0, 1, 1, // 10
+		 1.5,   0.7,  0, 0, 1, // 11
+
+
+		// left
+		 1.5,   0.5,  0, 0, 0, // 12
+		 1.5,   0.5,  0.7, 1, 0, // 13
+		 1.5,   0.7,  0.7, 1, 1, // 14
+		 1.5,   0.7,  0, 0, 1, // 15
+
+		// upper
+		 1.5,   0.7,  0.7, 0, 0,   // 16
+		 3.9,   0.7,  0.7, 1, 0,  // 17
+		 3.9,   0.7,  0, 1, 1,  // 18
+		 1.5,   0.7,  0, 0, 1,   // 19
+
+		// bottom
+		 1.5,   0.5,  0.7, 0, 0, // 20
+		 3.9,   0.5,  0.7, 1, 0,  // 21
+		 3.9,   0.5,  0, 1, 1,  // 22
+		 1.5,   0.5,  0, 0, 1, // 23
+	};
+
+	unsigned int indices[] = {
+		0,  1,  2,  0,  2,  3,   // front
+		4,  5,  6,  4,  6, 7,   // right
+		8,  9,  10, 8,  10, 11,  // back
+		12, 14, 13, 12, 15, 14,  // left
+		16, 18, 17, 16, 19, 18,  // upper
+		20, 22, 21, 20, 23, 22   // bottom
+	};
+
+	glGenVertexArrays(1, &kakiMejaVAO);
+	glGenBuffers(1, &kakiMejaVBO);
+	glGenBuffers(1, &kakiMejaEBO);
+	// bind the Vertex Array Object first, then bind and set vertex buffer(s), and then configure vertex attributes(s).
+	glBindVertexArray(kakiMejaVAO);
+
+	glBindBuffer(GL_ARRAY_BUFFER, kakiMejaVBO);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
+
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, kakiMejaEBO);
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
+
+	// define position pointer layout 0
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(GLfloat), (GLvoid*)(0 * sizeof(GLfloat)));
+	glEnableVertexAttribArray(0);
+
+	// define texcoord pointer layout 1
+	glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(GLfloat), (GLvoid*)(3 * sizeof(GLfloat)));
+	glEnableVertexAttribArray(1);
+
+	// note that this is allowed, the call to glVertexAttribPointer registered VBO as the vertex attribute's bound vertex buffer object so afterwards we can safely unbind
+	glBindBuffer(GL_ARRAY_BUFFER, 0);
+
+	// You can unbind the VAO afterwards so other VAO calls won't accidentally modify this VAO, but this rarely happens. Modifying other
+	// VAOs requires a call to glBindVertexArray anyways so we generally don't unbind VAOs (nor VBOs) when it's not directly necessary.
+	glBindVertexArray(0);
+
+	// remember: do NOT unbind the EBO while a VAO is active as the bound element buffer object IS stored in the VAO; keep the EBO bound.
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+
+}
+
 
 
 void Demo::Buildtembok()
@@ -524,6 +712,38 @@ void Demo::DrawKursiSandaran()
 	glUniform1i(glGetUniformLocation(this->shaderProgram, "ourTexture"), 0);
 
 	glBindVertexArray(kursiSandaranVAO); // seeing as we only have a single VAO there's no need to bind it every time, but we'll do so to keep things a bit more organized
+
+	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
+
+	glBindTexture(GL_TEXTURE_2D, 0);
+	glBindVertexArray(0);
+}
+
+void Demo::DrawMeja()
+{
+	glUseProgram(shaderProgram);
+
+	glActiveTexture(GL_TEXTURE0);
+	glBindTexture(GL_TEXTURE_2D, mejaTexture);
+	glUniform1i(glGetUniformLocation(this->shaderProgram, "ourTexture"), 0);
+
+	glBindVertexArray(mejaVAO); // seeing as we only have a single VAO there's no need to bind it every time, but we'll do so to keep things a bit more organized
+
+	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
+
+	glBindTexture(GL_TEXTURE_2D, 0);
+	glBindVertexArray(0);
+}
+
+void Demo::DrawKakiMeja()
+{
+	glUseProgram(shaderProgram);
+
+	glActiveTexture(GL_TEXTURE0);
+	glBindTexture(GL_TEXTURE_2D, kakiMejaTexture);
+	glUniform1i(glGetUniformLocation(this->shaderProgram, "ourTexture"), 0);
+
+	glBindVertexArray(kakiMejaVAO); // seeing as we only have a single VAO there's no need to bind it every time, but we'll do so to keep things a bit more organized
 
 	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
 

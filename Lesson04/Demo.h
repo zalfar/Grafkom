@@ -20,6 +20,7 @@ private:
 	GLuint mejaVBO, mejaVAO, mejaEBO, mejaTexture;
 	GLuint kursiDudukanVBO, kursiDudukanVAO, kursiDudukanEBO, kursiDudukanTexture;
 	GLuint kursiSandaranVBO, kursiSandaranVAO, kursiSandaranEBO, kursiSandaranTexture;
+	GLuint kakiMejaVBO, kakiMejaVAO, kakiMejaEBO, kakiMejaTexture;
 	float viewCamX, viewCamY, viewCamZ, upCamX, upCamY, upCamZ, posCamX, posCamY, posCamZ, CAMERA_SPEED, fovy;
 	virtual void Init();
 	virtual void DeInit();
@@ -34,6 +35,8 @@ private:
 	//Meja
 	void BuildMeja();
 	void DrawMeja();
+	void BuildKakiMeja();
+	void DrawKakiMeja();
 
 	//Kursi
 	void BuildKursiDudukan();
