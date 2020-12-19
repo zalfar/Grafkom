@@ -13,6 +13,8 @@ void Demo::Init() {
 	Buildtembok();
 	BuildColoredPlane();
 	BuildKasur();
+	BuildKursiDudukan();
+	BuildKursiSandaran();
 	InitCamera();
 }
 void Demo::DeInit() {
@@ -95,9 +97,6 @@ void Demo::ProcessInput(GLFWwindow* window) {
 	}
 	RotateCamera(-angleY);
 
-
-
-
 }
 void Demo::Update(double deltaTime) {
 
@@ -120,6 +119,8 @@ void Demo::Render() {
 	glUniformMatrix4fv(viewLoc, 1, GL_FALSE, glm::value_ptr(view));
 
 	DrawKasur();
+	DrawKursiDudukan();
+	DrawKursiSandaran();
 	Drawtembok();
 	DrawColoredPlane();
 	glDisable(GL_DEPTH_TEST);
@@ -194,6 +195,187 @@ void Demo::BuildKasur()
 	glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
 
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, kasurEBO);
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
+
+	// define position pointer layout 0
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(GLfloat), (GLvoid*)(0 * sizeof(GLfloat)));
+	glEnableVertexAttribArray(0);
+
+	// define texcoord pointer layout 1
+	glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(GLfloat), (GLvoid*)(3 * sizeof(GLfloat)));
+	glEnableVertexAttribArray(1);
+
+	// note that this is allowed, the call to glVertexAttribPointer registered VBO as the vertex attribute's bound vertex buffer object so afterwards we can safely unbind
+	glBindBuffer(GL_ARRAY_BUFFER, 0);
+
+	// You can unbind the VAO afterwards so other VAO calls won't accidentally modify this VAO, but this rarely happens. Modifying other
+	// VAOs requires a call to glBindVertexArray anyways so we generally don't unbind VAOs (nor VBOs) when it's not directly necessary.
+	glBindVertexArray(0);
+
+	// remember: do NOT unbind the EBO while a VAO is active as the bound element buffer object IS stored in the VAO; keep the EBO bound.
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+
+}
+
+void Demo::BuildKursiDudukan()
+{	glGenTextures(1, &kursiDudukanTexture);
+	glBindTexture(GL_TEXTURE_2D, kursiDudukanTexture);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	int width, height;
+	unsigned char* image = SOIL_load_image("wood.png", &width, &height, 0, SOIL_LOAD_RGBA);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, image);
+	SOIL_free_image_data(image);
+	glBindTexture(GL_TEXTURE_2D, 0);
+	float vertices[] = {
+		// format position, tex coords
+		// front
+		 2.0,   0.0, -3.0, 0, 0,  // 0
+		 3.0,   0.0, -3.0, 1, 0,  // 1
+		 3.0,   0.2, -3.0, 1, 1,  // 2
+		 2.0,   0.2, -3.0, 0, 1,  // 3
+
+		//// right
+		 3.0,   0.0, -3.0, 0, 0,  // 4
+		 3.0,   0.0, -3.9, 1, 0,  // 5
+		 3.0,   0.2, -3.9, 1, 1,  // 6
+		 3.0,   0.2, -3.0, 0, 1,  // 7
+
+		// back
+		 3.0,   0.0, -3.9, 0, 0, // 8 
+		 2.0,   0.0, -3.9, 1, 0, // 9
+		 2.0,   0.2, -3.9, 1, 1, // 10
+		 3.0,   0.2, -3.9, 0, 1, // 11
+
+		// left
+		 2.0,   0.0, -3.9, 0, 0, // 12
+		 2.0,   0.0, -3.0, 1, 0, // 13
+		 2.0,   0.2, -3.0, 1, 1, // 14
+		 2.0,   0.2, -3.9, 0, 1, // 15
+
+		//// upper
+		 3.0,   0.2, -3.0, 0, 0,   // 16
+		 2.0,   0.2, -3.0, 1, 0,  // 17
+		 2.0,   0.2, -3.9, 1, 1,  // 18
+		 3.0,   0.2, -3.9, 0, 1,   // 19
+
+		// bottom
+		 //3.0,   0.1, -3.0, 0, 0, // 20
+		 //2.0,   0.1, -3.0, 1, 0,  // 21
+		 //3.0,   0.1, -3.9, 1, 1,  // 22
+		 //2.0,   0.1, -3.9, 0, 1, // 23
+	};
+
+	unsigned int indices[] = {
+		0,  1,  2,  0,  2,  3,   // front
+		4,  5,  6,  4,  6, 7,   // right
+		8,  9,  10, 8,  10, 11,  // back
+		12, 14, 13, 12, 15, 14,  // left
+		16, 18, 17, 16, 19, 18,  // upper
+		20, 22, 21, 20, 23, 22   // bottom
+	};
+
+	glGenVertexArrays(1, &kursiDudukanVAO);
+	glGenBuffers(1, &kursiDudukanVBO);
+	glGenBuffers(1, &kursiDudukanEBO);
+	// bind the Vertex Array Object first, then bind and set vertex buffer(s), and then configure vertex attributes(s).
+	glBindVertexArray(kursiDudukanVAO);
+
+	glBindBuffer(GL_ARRAY_BUFFER, kursiDudukanVBO);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
+
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, kursiDudukanEBO);
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
+
+	// define position pointer layout 0
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(GLfloat), (GLvoid*)(0 * sizeof(GLfloat)));
+	glEnableVertexAttribArray(0);
+
+	// define texcoord pointer layout 1
+	glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(GLfloat), (GLvoid*)(3 * sizeof(GLfloat)));
+	glEnableVertexAttribArray(1);
+
+	// note that this is allowed, the call to glVertexAttribPointer registered VBO as the vertex attribute's bound vertex buffer object so afterwards we can safely unbind
+	glBindBuffer(GL_ARRAY_BUFFER, 0);
+
+	// You can unbind the VAO afterwards so other VAO calls won't accidentally modify this VAO, but this rarely happens. Modifying other
+	// VAOs requires a call to glBindVertexArray anyways so we generally don't unbind VAOs (nor VBOs) when it's not directly necessary.
+	glBindVertexArray(0);
+
+	// remember: do NOT unbind the EBO while a VAO is active as the bound element buffer object IS stored in the VAO; keep the EBO bound.
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+
+}
+
+void Demo::BuildKursiSandaran()	
+{
+	glGenTextures(1, &kursiSandaranTexture);
+	glBindTexture(GL_TEXTURE_2D, kursiSandaranTexture);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	int width, height;
+	unsigned char* image = SOIL_load_image("wood.png", &width, &height, 0, SOIL_LOAD_RGBA);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, image);
+	SOIL_free_image_data(image);
+	glBindTexture(GL_TEXTURE_2D, 0);
+	float vertices[] = {
+		// format position, tex coords
+		// front
+		 //2.0,   0.0, -3.0, 0, 0,  // 0
+		 //3.0,   0.0, -3.0, 1, 0,  // 1
+		 //3.0,   0.2, -3.0, 1, 1,  // 2
+		 //2.0,   0.2, -3.0, 0, 1,  // 3
+
+		//// right
+		 3.0,   0.2, -3.7, 0, 0,  // 4
+		 3.0,   0.2, -3.9, 1, 0,  // 5
+		 3.0,   1.0, -3.9, 1, 1,  // 6
+		 3.0,   1.0, -3.7, 0, 1,  // 7
+
+		// back
+		 //3.0,   0.2, -3.9, 0, 0, // 8 
+		 //2.0,   0.2, -3.9, 1, 0, // 9
+		 //2.0,   1.0, -3.9, 1, 1, // 10
+		 //3.0,   1.0, -3.9, 0, 1, // 11
+
+		// left
+		 3.0,   0.2, -3.9, 0, 0, // 12
+		 3.0,   0.2, -3.7, 1, 0, // 13
+		 3.0,   1.0, -3.7, 1, 1, // 14
+		 3.0,   1.0, -3.9, 0, 1, // 15
+
+		//// upper
+		 //3.0,   1.0, -3.0, 0, 0,   // 16
+		 //2.0,   1.0, -3.0, 1, 0,  // 17
+		 //2.0,   1.0, -3.9, 1, 1,  // 18
+		 //3.0,   1.0, -3.9, 0, 1,   // 19
+
+		// bottom
+		 //3.0,   0.1, -3.0, 0, 0, // 20
+		 //2.0,   0.1, -3.0, 1, 0,  // 21
+		 //3.0,   0.1, -3.9, 1, 1,  // 22
+		 //2.0,   0.1, -3.9, 0, 1, // 23
+	};
+
+	unsigned int indices[] = {
+		0,  1,  2,  0,  2,  3,   // front
+		4,  5,  6,  4,  6, 7,   // right
+		8,  9,  10, 8,  10, 11,  // back
+		12, 14, 13, 12, 15, 14,  // left
+		16, 18, 17, 16, 19, 18,  // upper
+		20, 22, 21, 20, 23, 22   // bottom
+	};
+
+	glGenVertexArrays(1, &kursiSandaranVAO);
+	glGenBuffers(1, &kursiSandaranVBO);
+	glGenBuffers(1, &kursiSandaranEBO);
+	// bind the Vertex Array Object first, then bind and set vertex buffer(s), and then configure vertex attributes(s).
+	glBindVertexArray(kursiSandaranVAO);
+
+	glBindBuffer(GL_ARRAY_BUFFER, kursiSandaranVBO);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
+
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, kursiSandaranEBO);
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
 
 	// define position pointer layout 0
@@ -316,6 +498,39 @@ void Demo::DrawKasur()
 	glBindTexture(GL_TEXTURE_2D, 0);
 	glBindVertexArray(0);
 }
+
+void Demo::DrawKursiDudukan()
+{
+	glUseProgram(shaderProgram);
+
+	glActiveTexture(GL_TEXTURE0);
+	glBindTexture(GL_TEXTURE_2D, kursiDudukanTexture);
+	glUniform1i(glGetUniformLocation(this->shaderProgram, "ourTexture"), 0);
+
+	glBindVertexArray(kursiDudukanVAO); // seeing as we only have a single VAO there's no need to bind it every time, but we'll do so to keep things a bit more organized
+
+	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
+
+	glBindTexture(GL_TEXTURE_2D, 0);
+	glBindVertexArray(0);
+}
+
+void Demo::DrawKursiSandaran()
+{
+	glUseProgram(shaderProgram);
+
+	glActiveTexture(GL_TEXTURE0);
+	glBindTexture(GL_TEXTURE_2D, kursiSandaranTexture);
+	glUniform1i(glGetUniformLocation(this->shaderProgram, "ourTexture"), 0);
+
+	glBindVertexArray(kursiSandaranVAO); // seeing as we only have a single VAO there's no need to bind it every time, but we'll do so to keep things a bit more organized
+
+	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
+
+	glBindTexture(GL_TEXTURE_2D, 0);
+	glBindVertexArray(0);
+}
+
 
 void Demo::BuildColoredPlane()
 {

@@ -18,6 +18,8 @@ private:
 	GLuint tembokVBO, tembokVAO, tembokEBO, tembokTexture;
 	GLuint kasurVBO, kasurVAO, kasurEBO, kasurTexture;
 	GLuint mejaVBO, mejaVAO, mejaEBO, mejaTexture;
+	GLuint kursiDudukanVBO, kursiDudukanVAO, kursiDudukanEBO, kursiDudukanTexture;
+	GLuint kursiSandaranVBO, kursiSandaranVAO, kursiSandaranEBO, kursiSandaranTexture;
 	float viewCamX, viewCamY, viewCamZ, upCamX, upCamY, upCamZ, posCamX, posCamY, posCamZ, CAMERA_SPEED, fovy;
 	virtual void Init();
 	virtual void DeInit();
@@ -25,14 +27,19 @@ private:
 	virtual void Render();
 	virtual void ProcessInput(GLFWwindow* window);
 
-	//kursi
+	//kasur
 	void BuildKasur();
 	void DrawKasur();
 
-	//
+	//Meja
 	void BuildMeja();
 	void DrawMeja();
 
+	//Kursi
+	void BuildKursiDudukan();
+	void DrawKursiDudukan();
+	void BuildKursiSandaran();
+	void DrawKursiSandaran();
 
 	//tembok
 	void Buildtembok();
