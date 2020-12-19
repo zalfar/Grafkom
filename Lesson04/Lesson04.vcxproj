@@ -137,15 +137,9 @@
     <None Include="vertexShader.vert" />
   </ItemGroup>
   <ItemGroup>
-    <Image Include="..\..\..\floortexture.jpg" />
+    <Image Include="..\..\..\..\teksturlantai.png" />
     <Image Include="..\..\..\Interior-Hotel-OpenGL-master_2\vs\window.png" />
-    <Image Include="..\..\..\lantai.png" />
     <Image Include="..\..\..\tembokk.png" />
-    <Image Include="..\..\..\walltexture.jpg" />
-    <Image Include="..\..\..\woodtexture.jpg" />
-    <Image Include="ac.png" />
-    <Image Include="ac1.png" />
-    <Image Include="cermin.png" />
     <Image Include="D:\Downloads\Picture\kayu.png" />
     <Image Include="Tembok001.png" />
     <Image Include="wood.png" />

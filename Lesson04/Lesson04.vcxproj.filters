@@ -51,34 +51,16 @@
     <Image Include="wood.png">
       <Filter>Resource Files</Filter>
     </Image>
-    <Image Include="cermin.png">
-      <Filter>Resource Files</Filter>
-    </Image>
     <Image Include="D:\Downloads\Picture\kayu.png">
       <Filter>Resource Files</Filter>
     </Image>
     <Image Include="wood1.png">
       <Filter>Resource Files</Filter>
     </Image>
-    <Image Include="ac.png">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="ac1.png">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="..\..\..\woodtexture.jpg">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="..\..\..\walltexture.jpg">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="..\..\..\floortexture.jpg">
-      <Filter>Resource Files</Filter>
-    </Image>
     <Image Include="..\..\..\tembokk.png">
       <Filter>Resource Files</Filter>
     </Image>
-    <Image Include="..\..\..\lantai.png">
+    <Image Include="..\..\..\..\teksturlantai.png">
       <Filter>Resource Files</Filter>
     </Image>
   </ItemGroup>
